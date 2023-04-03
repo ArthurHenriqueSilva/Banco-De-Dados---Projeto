@@ -1,0 +1,101 @@
+openapi: "3.0.0"
+info:
+  version: "1.0.0"
+  title: "Usuario API"
+  description: "API para gerenciamento de usuário - PROJETO PARTE 1 - BANCO DE DADOS UFS "
+servers:
+  - url: "http://localhost:5000/"
+paths:
+  /usuario:
+    post:
+      summary: "Criação de usuário"
+      operationId: "criar_usuario"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cpf:
+                  type: integer
+                  description: "CPF do usuário"
+                nome:
+                  type: string
+                  description: "Nome do usuário"
+                data_nascimento:
+                  type: string
+                  format: date
+                  description: "data de nascimento do usuário no formato(YYYY-MM-DD)"
+              required:
+                - cpf
+                - nome
+                - data_nascimento
+      responses:
+        '200':
+          description: "Usuario criado com sucesso."
+        '400':
+          description: "Requisição inválida."
+        '500':
+          description: "Erro interno de servidor"
+    get:
+      summary: "Listar todos os usuários"
+      operationId: "listar_usuarios"
+      responses:
+        '200':
+          description: "Mostrar lista de usuários."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  usuarios:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        cpf:
+                          type: integer
+                          description: "CPF do usuário"
+                        nome:
+                          type: string
+                          description: "CPF do usuário"
+                        data_nascimento:
+                          type: string
+                          format: date
+                          description: "Data de nascimento no formato: (YYYY-MM-DD)"
+        '500':
+          description: "Erro interno de servidor"
+  /usuario/{cpf}:
+    get:
+      summary: "Encontrar Usuário pelo CPF"
+      operationId: "buscar_usuario"
+      parameters:
+        - name: "cpf"
+          in: "path"
+          description: "CPF do usuário to retrieve"
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Usuario encontrado."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  cpf:
+                    type: integer
+                    description: "CPF do usuário"
+                  nome:
+                    type: string
+                    description: "CPF do usuário"
+                  data_nascimento:
+                    type: string
+                    format: date
+                    description: "Data de nascimento no formato: (YYYY-MM-DD)"
+        '404':
+          description: "Usuario não encontrado."
+        '500':
+          description: "Erro interno de servidor."
